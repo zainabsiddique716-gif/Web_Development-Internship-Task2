@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Design tokens.
+  Two contrast fixes vs. the reference mock (documented in README):
+  1. --amber-ink / --teal-ink: darker "on-tone" variants used only for text
+     sitting on *-soft tinted backgrounds. The base --amber/--teal are kept
+     for solid fills, decoration, and focus rings, where the contrast
+     requirement is lower (3:1 for UI components) or doesn't apply
+     (aria-hidden decoration).
+  2. --danger darkened slightly so the sync-error alert text clears 4.5:1
+     on --danger-soft.
+*/
+:root[data-theme="light"] {
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --surface-2: #F0EEE6;
+  --ink: #1B1E27;
+  --ink-soft: #5B5F6B;
+  --line: #E2DFD4;
+
+  --amber: #C97A1D;
+  --amber-ink: #8F560C;
+  --amber-soft: #F4E3C6;
+
+  --teal: #2F7B6E;
+  --teal-ink: #256257;
+  --teal-soft: #DCEEEA;
+
+  --danger: #A03D34;
+  --danger-soft: #F4DEDB;
+
+  --board: #1B1E27;
+  --board-digit: #F4E3C6;
+  --shadow: 0 1px 2px rgba(27,30,39,0.06), 0 8px 24px rgba(27,30,39,0.06);
+}
+
+:root[data-theme="dark"] {
+  --bg: #14171F;
+  --surface: #1B1F2A;
+  --surface-2: #232838;
+  --ink: #F1EFE6;
+  --ink-soft: #9A9DAC;
+  --line: #2E3342;
+
+  --amber: #E8A23D;
+  --amber-ink: #E8A23D;
+  --amber-soft: #3A2E17;
+
+  --teal: #4FB3A2;
+  --teal-ink: #4FB3A2;
+  --teal-soft: #163330;
+
+  --danger: #E37065;
+  --danger-soft: #3A1E1B;
+
+  --board: #0D0F15;
+  --board-digit: #E8A23D;
+  --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Respect reduced-motion preference across every transition/animation used */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
