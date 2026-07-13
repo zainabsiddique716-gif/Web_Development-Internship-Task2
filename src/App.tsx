@@ -28,12 +28,13 @@ export default function App() {
   const [syncing, setSyncing] = useState(false);
   const [syncError, setSyncError] = useState(false);
   const [log, setLog] = useState<LogEntry[]>(INITIAL_LOG);
+  const [taskName, setTaskName] = useState("");
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  
-useEffect(() => {
+
+  useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
-  
+
   useEffect(() => {
     if (running && secondsLeft > 0) {
       intervalRef.current = setInterval(() => {
@@ -82,13 +83,16 @@ useEffect(() => {
       }
       setLog((l) => [
         {
-          label: `${DURATIONS[durationIdx].label} — untitled task`,
+          label: taskName.trim()
+            ? taskName.trim()
+            : `${DURATIONS[durationIdx].label} — untitled task`,
           time: new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }),
           minutes: DURATIONS[durationIdx].minutes,
           status: "done",
         },
         ...l,
       ]);
+      setTaskName("");
       handleReset();
     }, 1100);
   };
@@ -142,6 +146,29 @@ useEffect(() => {
               onChange={handleDurationChange}
             />
 
+            {complete && (
+              <div className="mb-4">
+                <label htmlFor="task-name" className="sr-only">
+                  Task name
+                </label>
+                <input
+                  id="task-name"
+                  type="text"
+                  value={taskName}
+                  onChange={(e) => setTaskName(e.target.value)}
+                  placeholder="Name this sprint (optional)"
+                  disabled={syncing}
+                  className={[
+                    "w-full sm:w-72 rounded-full px-4 py-2 text-sm",
+                    "bg-[var(--surface-2)] text-[var(--ink)] border border-[var(--line)]",
+                    "placeholder:text-[var(--ink-soft)]",
+                    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-none outline-[var(--teal)]",
+                    "disabled:opacity-50 disabled:cursor-not-allowed",
+                  ].join(" ")}
+                />
+              </div>
+            )}
+
             <div className="flex flex-wrap items-center gap-3">
               {!complete ? (
                 <>
@@ -157,7 +184,7 @@ useEffect(() => {
                   <Button variant="primary" size="lg" loading={syncing} onClick={handleFinishSync}>
                     {syncing ? "Saving to log…" : "Save to log"}
                   </Button>
-                  <Button variant="ghost" onClick={handleReset}>
+                  <Button variant="ghost" onClick={() => { setTaskName(""); handleReset(); }}>
                     Discard
                   </Button>
                 </>
@@ -182,7 +209,7 @@ useEffect(() => {
               style={{ boxShadow: "var(--shadow)" }}
             >
               <p className="font-medium mb-1.5 text-[var(--ink)]">Board tip</p>
-              Sprints under 30 minutes save automatically to today's log — no need to name them until you review.
+              Sprints save to today's log as soon as you hit Save — name them when you finish, or leave it blank and it'll say "untitled task".
             </div>
           </div>
         </section>
