@@ -146,6 +146,7 @@ export default function App() {
           <ThemeToggle theme={theme} onToggle={() => setTheme((t) => (t === "light" ? "dark" : "light"))} />
         </header>
 
+        <main>
         {/* Hero */}
         <section className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-6 sm:gap-8 mb-10">
           <div
@@ -261,6 +262,7 @@ export default function App() {
             ))}
           </ul>
         </section>
+        </main>
       </div>
     </div>
   );
