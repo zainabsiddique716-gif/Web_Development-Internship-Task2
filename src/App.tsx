@@ -29,7 +29,11 @@ export default function App() {
   const [syncError, setSyncError] = useState(false);
   const [log, setLog] = useState<LogEntry[]>(INITIAL_LOG);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
+  
+useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+  
   useEffect(() => {
     if (running && secondsLeft > 0) {
       intervalRef.current = setInterval(() => {
