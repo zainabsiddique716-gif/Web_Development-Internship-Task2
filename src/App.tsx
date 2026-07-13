@@ -30,6 +30,31 @@ export default function App() {
   const [log, setLog] = useState<LogEntry[]>(INITIAL_LOG);
   const [taskName, setTaskName] = useState("");
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const wasCompleteRef = useRef(false);
+
+  const playChime = useCallback(() => {
+    try {
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const ctx = new AudioCtx();
+      const notes = [880, 1046.5];
+      notes.forEach((freq, i) => {
+        const start = ctx.currentTime + i * 0.22;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, start);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.18, start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.4);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(start);
+        osc.stop(start + 0.42);
+      });
+    } catch {
+      // Audio not supported or blocked — fail silently, timer still works.
+    }
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -56,6 +81,13 @@ export default function App() {
   const total = DURATIONS[durationIdx].minutes * 60;
   const pct = Math.round(((total - secondsLeft) / total) * 100);
   const complete = secondsLeft === 0;
+
+  useEffect(() => {
+    if (complete && !wasCompleteRef.current) {
+      playChime();
+    }
+    wasCompleteRef.current = complete;
+  }, [complete, playChime]);
 
   const handleDurationChange = useCallback(
     (idx: number) => {
