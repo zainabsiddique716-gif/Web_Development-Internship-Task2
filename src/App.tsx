@@ -8,7 +8,6 @@ import StatBadge from "./components/StatBadge";
 import LogRow from "./components/LogRow";
 import ThemeToggle from "./components/ThemeToggle";
 import ErrorAlert from "./components/ErrorAlert";
-
 const DURATIONS: Duration[] = [
   { label: "Sprint", minutes: 25 },
   { label: "Deep", minutes: 50 },
@@ -19,7 +18,6 @@ const INITIAL_LOG: LogEntry[] = [
   { label: "Deep work — Bison grammar", time: "9:10 AM", minutes: 50, status: "done" },
   { label: "Sprint — SHAP write-up", time: "8:20 AM", minutes: 25, status: "skipped" },
 ];
-
 export default function App() {
   const [theme, setTheme] = useState<Theme>("light");
   const [durationIdx, setDurationIdx] = useState(0);
@@ -52,7 +50,7 @@ export default function App() {
         osc.stop(start + 0.42);
       });
     } catch {
-      // Audio not supported or blocked — fail silently, timer still works.
+      // Audio not supported or blocked — fail silently, timer still works
     }
   }, []);
 
