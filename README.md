@@ -44,7 +44,7 @@ Repeating pieces (duration buttons, log rows, stat tiles) are each their own com
 
 ## Decisions I made where the design wasn't 100% clear
 
-- **Breakpoints**: the design only really called out two screen sizes, so I used 640px as the mobile→tablet cutoff and 1024px as tablet→desktop — that's where the two-column layout actually needed the extra room.
+- **Breakpoints**: the design only really called out two screen sizes, so I used 640px as the mobile and tablet cutoff and 1024px as tablet to desktop — that's where the two-column layout actually needed the extra room.
 - **Hover effects**: these were originally going to be handled with JS mouse events, but I switched to plain CSS hover states instead, since that also respects disabled buttons automatically and works better across devices.
 - **Naming a sprint**: the original mock didn't have a way to name a session before saving it, so I added a simple text input that shows up once a sprint finishes.
 - **End-of-sprint sound**: added a short two-tone chime (generated in the browser, no audio file needed) so you know when time's up without watching the screen.
